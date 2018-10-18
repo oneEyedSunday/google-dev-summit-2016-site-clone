@@ -1,0 +1,39 @@
+{
+  "name": "mydevsummit",
+  "version": "0.0.0",
+  "description": "Rewriting Paul Lewis'Chrome Dev Summit 2016 in express",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "bump": "npm version patch",
+    "build": "npm run bump && npm run build-css && npm run build-js",
+    "build-css": "make-css-folder && npm run build-inline-css && npm run build-linked-css",
+    "build-js": "rollup -c && uglifyjs public/scripts/cds.js -o public/scripts/cds.js --comments all",
+    "make-css-folder": "mkdirp public/styles",
+    "build-inline-css": "node-sass sass/inline.scss | cleancss --s1 -o public/styles/inline.css",
+    "build-linked-css": "node-sass sass/cds.scss |cleancss --s1 -o public/styles/cds.css",
+    "watch": "parallelshell \"npm run watch-sass\" \"npm run watch-js\"",
+    "watch-js": "rollup -wc",
+    "watch-sass": "npm run make-css-folder && node-sass -wr sass/ -o public/styles/"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "ejs-locals": "^1.0.2",
+    "express": "~4.16.0",
+    "express-ejs-layouts": "^2.5.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "clean-css": "^4.2.1",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^4.9.4",
+    "parallelshell": "3.0.1",
+    "rollup": "^0.66.6",
+    "rollup-plugin-cleanup": "^3.0.0",
+    "rollup-watch": "^4.3.1",
+    "uglify-js": "^3.4.9"
+  }
+}
